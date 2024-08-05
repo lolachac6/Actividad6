@@ -8,13 +8,14 @@ import { firstValueFrom } from 'rxjs';
 })
 export class UsersService {
 
-  http= inject(HttpClient)
-  private url: string= 'https://peticiones.online/api/users'
+  
+  private url: string = 'https://peticiones.online/api/users'
+  private http = inject(HttpClient)
 
 
-  getAll():Promise <IUser>{
-    return firstValueFrom(this.http.get<IUser>(this.url))
-  }
+getAll(page:number = 1):Promise<IUser>{
+  return firstValueFrom(this.http.get<IUser>(`${this.url}?page=${page}`))
+}
 
 
 
