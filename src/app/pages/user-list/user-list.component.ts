@@ -1,4 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { UsersService } from '../../services/users.service';
+import { IUser } from '../../interfaces/iuser.interfaces';
+import { IResult } from '../../interfaces/iresult.interfaces';
 
 @Component({
   selector: 'app-user-list',
@@ -8,5 +11,17 @@ import { Component } from '@angular/core';
   styleUrl: './user-list.component.css'
 })
 export class UserListComponent {
+  userservice = inject(UsersService);
+  arrUsers!: IResult[];
+
+ async ngOnInit() {
+    try{
+      const response = await this.userservice.getAll()
+      this.arrUsers=response.results
+    } catch(error){
+      console.log(error)
+    }
+    
+  }
 
 }
