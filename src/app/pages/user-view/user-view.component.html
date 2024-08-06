@@ -9,7 +9,7 @@
         <p><strong>Nombre Usuario:</strong> {{singleUser.username}}</p>
         <p><strong>Email:</strong> {{singleUser.email}}</p>
         <div class="d-flex flex-row ">
-            <button class="btn btn-outline-warning">Eliminar</button>
+            <button (click)="deleteUser(singleUser)" class="btn btn-outline-warning">Eliminar</button>
             <button class="btn btn-outline-warning"
                 [routerLink]="['/control','updateuser',singleUser._id]">Actualizar</button>
             <button class="btn btn-outline-warning" [routerLink]="['/control','home']">Volver al listado</button>

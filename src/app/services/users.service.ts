@@ -24,6 +24,10 @@ getById(id:number):Promise<IResult>{
 
 }
 
+delete(id:string):Promise<IResult>{
+  return firstValueFrom(this.http.delete<IResult>(`${this.url}/${id}`))
+}
+
 
 
 
