@@ -3,6 +3,8 @@ import { UsersService } from '../../services/users.service';
 import { IResult } from '../../interfaces/iresult.interfaces';
 import {  RouterLink } from '@angular/router';
 import { AllUsersComponent } from "../../component/all-users/all-users.component";
+import { ViewportScroller } from '@angular/common';
+
 
 
 @Component({
@@ -16,6 +18,8 @@ export class UserListComponent {
   userService = inject(UsersService)
   arrUsers!: IResult[];
   activePage:number=1
+  viewport=inject(ViewportScroller)
+  
   
 
   async ngOnInit() {
@@ -29,11 +33,14 @@ export class UserListComponent {
   }
 
   async restOfUsers(page:number=1):Promise<void>{
-
-    const response = await this.userService.getAll(page)
-     this.arrUsers = response.results 
-     this.activePage = page
-       
+   
+      const response = await this.userService.getAll(page)
+      this.arrUsers = response.results 
+      this.activePage = page
+      this.viewport.scrollToPosition([0, 0]);
+   
+    
+  
      }
    
 
