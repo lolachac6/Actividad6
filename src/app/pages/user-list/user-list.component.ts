@@ -38,9 +38,6 @@ export class UserListComponent {
       this.arrUsers = response.results 
       this.activePage = page
       this.viewport.scrollToPosition([0, 0]);
-   
-    
-  
      }
    
 
