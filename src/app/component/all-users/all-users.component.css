@@ -1,0 +1,9 @@
+@media(max-width: 1000px) {
+    .divButtons{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+
+    }
+
+}
