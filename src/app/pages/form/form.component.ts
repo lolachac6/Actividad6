@@ -51,7 +51,7 @@ export class FormComponent {
     const exp =
       /^(https?:\/\/(www\.)?|www\.)[a-zA-Z0-9._-]+\.[a-zA-Z.]{2,5}(\/[a-zA-Z0-9._-]*)*(\?[a-zA-Z0-9=&_.-]*)?$/;
     if (!exp.test(controlName.value)) {
-      return { imagenValidator: 'Url de la imagen no valido' };
+      return { imagenValidator: 'Url de la imagen no valida' };
     } else {
       return null;
     }
