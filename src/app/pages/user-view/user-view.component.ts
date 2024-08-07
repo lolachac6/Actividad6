@@ -19,6 +19,7 @@ export class UserViewComponent {
   serviceUser= inject(UsersService)
   singleUser!:IResult
   router = inject(Router)
+  arrSingleUser!:IResult[]
   
   
   ngOnInit(){
@@ -56,9 +57,7 @@ export class UserViewComponent {
               toast.onmouseleave = Swal.resumeTimer;
             },
           });
-          const updateResponse = await this.serviceUser.getAll();
-          console.log(updateResponse.results);
-          //this.router.navigate(['/control', 'home']);
+          this.router.navigate(['/control', 'home']);
         } else {
           console.log('id de usuario no encontrado');
         }
