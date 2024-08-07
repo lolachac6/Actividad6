@@ -22,55 +22,63 @@ export class AllUsersComponent {
   }
 
   async deleteUser(myUserid: IResult) {
-    Swal.fire({
-      title: `Estas seguro de que quieres borrar al usuario ${myUserid.first_name} ${myUserid.last_name}?`,
-      imageUrl: `${myUserid.image}`,
-      imageWidth: 200,
-      imageHeight: 200,
-      showDenyButton: true,
-      confirmButtonText: 'Eliminar',
-      denyButtonText: `No eliminar`,
-      confirmButtonColor: '#4caf50',
-    }).then(async (result) => {
-      if (result.isConfirmed) {
-        let variable = myUserid._id;
-        const response: IResult = await this.userservices.delete(variable);
-        if (response._id) {
+    if (myUserid._id) {
+      Swal.fire({
+        title: `Estas seguro de que quieres borrar al usuario ${myUserid.first_name} ${myUserid.last_name}?`,
+        imageUrl: `${myUserid.image}`,
+        imageWidth: 200,
+        imageHeight: 200,
+        showDenyButton: true,
+        confirmButtonText: 'Eliminar',
+        denyButtonText: `No eliminar`,
+        confirmButtonColor: '#4caf50',
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          //lo borramos
+          let variable = myUserid._id;
+          const response: IResult = await this.userservices.delete(variable);
+          if (response._id) {
+            try {
+              Swal.fire({
+                toast: true,
+                position: 'top-end',
+                icon: 'success',
+                title: 'Usuario eleminado con éxito',
+                showConfirmButton: false,
+                timer: 2500,
+                background: '#4caf50',
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.onmouseenter = Swal.stopTimer;
+                  toast.onmouseleave = Swal.resumeTimer;
+                },
+              });
+              //Actualizamos los usuarios
+              const updateResponse = await this.userservices.getAll(); //He puesto esto porque es lo que tendriamos que hacer para actualizar los usuarios y obtener todos menos el que hemos borrado.
+              this.user = updateResponse.results; // Se hace esto para que el componente se actualice del usuario que ficticiamente hemos borrado. En este caso no ocurre pero he querido dejarlo plasmado por si acaso.
+            } catch (error) {
+              console.log(error);
+            }
+          } else {
+            console.log('id de usuario no encontrado');
+          }
+        } else if (result.isDenied) {
           Swal.fire({
             toast: true,
             position: 'top-end',
-            icon: 'success',
-            title: 'Usuario eleminado con éxito',
+            icon: 'error',
+            title: 'Proceso cancelado',
             showConfirmButton: false,
+            background: '#dc3545',
             timer: 2500,
-            background: '#4caf50',
             timerProgressBar: true,
             didOpen: (toast) => {
               toast.onmouseenter = Swal.stopTimer;
               toast.onmouseleave = Swal.resumeTimer;
             },
           });
-          const updateResponse = await this.userservices.getAll(); //He puesto esto porque es lo que tendriamos que hacer para actualizar los usuarios y obtener todos menos el que hemos borrado.
-          this.user = updateResponse.results; // Se hace esto para que el componente se actualice del usuario que ficticiamente hemos borrado. En este caso no ocurre pero he querido dejarlo plasmado por si acaso.
-        } else {
-          console.log('id de usuario no encontrado');
         }
-      } else if (result.isDenied) {
-        Swal.fire({
-          toast: true,
-          position: 'top-end',
-          icon: 'error',
-          title: 'Proceso cancelado',
-          showConfirmButton: false,
-          background: '#dc3545',
-          timer: 2500,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.onmouseenter = Swal.stopTimer;
-            toast.onmouseleave = Swal.resumeTimer;
-          },
-        });
-      }
-    });
+      });
+    }
   }
 }

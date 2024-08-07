@@ -28,9 +28,10 @@ delete(id:string):Promise<IResult>{
   return firstValueFrom(this.http.delete<IResult>(`${this.url}/${id}`))
 }
 
+insert(user:IResult):Promise<IResult>{
+  return firstValueFrom(this.http.post<IResult>(`${this.url}`,user))
 
-
-
+}
 
 
 }
