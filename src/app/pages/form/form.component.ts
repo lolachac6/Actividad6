@@ -25,6 +25,7 @@ export class FormComponent {
 
   users: IResult[] = [];
   tipo: string = 'NUEVO';
+  tipobtn:string = 'Guardar';
   userForm: FormGroup;
 
   constructor() {
@@ -48,6 +49,7 @@ export class FormComponent {
     this.activatedRoute.params.subscribe(async (params: any) => {
       if (params.id) {
         this.tipo = 'ACTUALIZAR';
+        this.tipobtn = 'Actualizar';
         const user: IResult = await this.userServices.getById(params.id);
         this.userForm = new FormGroup({
           _id: new FormControl(user._id, []),
