@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { UsersService } from '../../services/users.service';
 import { IResult } from '../../interfaces/iresult.interfaces';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -21,30 +21,43 @@ import Swal from 'sweetalert2';
 export class FormComponent {
   userServices = inject(UsersService);
   router = inject(Router);
+  activatedRoute = inject(ActivatedRoute);
 
   users: IResult[] = [];
-
   tipo: string = 'NUEVO';
   userForm: FormGroup;
 
   constructor() {
-    this.userForm = new FormGroup(
-      {
-        nombre: new FormControl(null, [Validators.required]),
-        apellidos: new FormControl(null, [Validators.required]),
-        email: new FormControl(null, [
-          Validators.required,
-          Validators.pattern(
-            /^((([!#$%&'*+\-/=?^_`{|}~\w])|([!#$%&'*+\-/=?^_`{|}~\w][!#$%&'*+\-/=?^_`{|}~\.\w]{0,}[!#$%&'*+\-/=?^_`{|}~\w]))[@]\w+([-.]\w+)*\.\w+([-.]\w+)*)$/
-          ),
-        ]),
-        imagen: new FormControl(null, [
-          Validators.required,
-          this.imagenValidator,
-        ]),
-      },
-      []
-    );
+    this.userForm = new FormGroup({
+      nombre: new FormControl(null, [Validators.required]),
+      apellidos: new FormControl(null, [Validators.required]),
+      email: new FormControl(null, [
+        Validators.required,
+        Validators.pattern(
+          /^((([!#$%&'*+\-/=?^_`{|}~\w])|([!#$%&'*+\-/=?^_`{|}~\w][!#$%&'*+\-/=?^_`{|}~\.\w]{0,}[!#$%&'*+\-/=?^_`{|}~\w]))[@]\w+([-.]\w+)*\.\w+([-.]\w+)*)$/
+        ),
+      ]),
+      imagen: new FormControl(null, [
+        Validators.required,
+        this.imagenValidator,
+      ]),
+    });
+  }
+
+  ngOnInit() {
+    this.activatedRoute.params.subscribe(async (params: any) => {
+      if (params.id) {
+        this.tipo = 'ACTUALIZAR';
+        const user: IResult = await this.userServices.getById(params.id);
+        this.userForm = new FormGroup({
+          _id: new FormControl(user._id, []),
+          nombre: new FormControl(user.first_name, []),
+          apellidos: new FormControl(user.last_name, []),
+          email: new FormControl(user.email, []),
+          imagen: new FormControl(user.image, []),
+        });
+      }
+    });
   }
 
   imagenValidator(controlName: AbstractControl): any {
@@ -64,24 +77,42 @@ export class FormComponent {
     );
   }
   async getDataForm() {
-    try {
-      const response: IResult = await this.userServices.insert(
-        this.userForm.value
-      );
-      if (response.id) {
-        Swal.fire({
-          title: 'Usuario creado con exito',
-          icon: 'success',
-        });
-        this.router.navigate(['/control', 'home']);
-      } else {
-        Swal.fire({
-          title: 'Ha habido un problema al crear el usuario',
-          icon: 'error',
-        });
+    if (this.userForm.value._id) {
+      //ACTUALIZANDO
+      try {
+        const response: IResult = await this.userServices.update(this.userForm.value)
+        if (response._id) {
+          Swal.fire({
+            title: 'Usuario actualizado con exito',
+            icon: 'success',
+          });
+          this.router.navigate(['/control', 'home']);
+        }
+        }catch(error){
+          console.log(error)
+        }
+     
+      }else {
+      //INSERCCION
+      try {
+        const response: IResult = await this.userServices.insert(
+          this.userForm.value
+        );
+        if (response.id) {
+          Swal.fire({
+            title: 'Usuario creado con exito',
+            icon: 'success',
+          });
+          this.router.navigate(['/control', 'home']);
+        } else {
+          Swal.fire({
+            title: 'Ha habido un problema al crear el usuario',
+            icon: 'error',
+          });
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
   }
 }
