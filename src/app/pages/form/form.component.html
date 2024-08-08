@@ -13,7 +13,7 @@
           placeholder="Introduce el Nombre del usuario"
         />
         @if(checkControl('nombre','required')){
-        <p class="text-danger">El nombre es obligatorio</p>
+        <p class="text-danger">* El nombre es obligatorio</p>
         }
       </div>
       <div class="my-3">
@@ -26,7 +26,7 @@
           placeholder="Introduce el/los apellido/s del usuario"
         />
         @if(checkControl('apellidos','required')){
-        <p class="text-danger">El/Los apellido/s es/son obligatorio/s</p>
+        <p class="text-danger">* El/Los apellido/s es/son obligatorio/s</p>
         }
       </div>
       <div class="my-3">
@@ -39,13 +39,13 @@
           placeholder="Introduce el email del usuario"
         />
         @if(checkControl('email','required')){
-        <p class="text-danger">El nombre es obligatorio</p>
+        <p class="text-danger">* El email es obligatorio</p>
         }@else if(checkControl('email','pattern')){
-        <p class="text-danger">El email no es valido</p>
+        <p class="text-danger">* El email no es valido</p>
         }
       </div>
       <div class="my-3">
-        <label class="form-label" for="imagen">Imagen Usuario</label>
+        <label class="form-label" for="imagen">Imagen Usuario(url)</label>
         <input
           type="url"
           id="imagen"
@@ -54,7 +54,7 @@
           placeholder="Introduce url de la imagen del usuario"
         />
         @if(checkControl('imagen','required')){
-        <p class="text-danger">La imagen es obligatoria</p>
+        <p class="text-danger">* La imagen es obligatoria</p>
         }@else if(checkControl('imagen','imagenValidator')){
         <p class="text-danger">
           {{ userForm.get('imagen')?.errors?.['imagenValidator'] }}
@@ -66,7 +66,7 @@
         <input
           class="btn btn-warning"
           type="submit"
-          value="{{ tipo }}"
+          [value]="tipo"
           [disabled]="!userForm.valid"
         />
       </div>
