@@ -1,0 +1,23 @@
+<div class="col">
+    <div class="card">
+        <img [src]="myUser.image" class="card-img-top img-fluid rounded-circle w-75 m-auto pt-3 "
+            [alt]=" 'contacto de '+myUser.first_name">
+        <div class="card-body">
+            <h5 class="card-title mb-3 text-center">{{myUser.first_name}} {{myUser.last_name}}</h5>
+            <div class=" divButtons d-flex flex-row justify-content-lg-around">
+                <div>
+                    <a [routerLink]="['/control','user',myUser._id]"><button class="btn btn-outline-warning "><i class="fa-duotone fa-solid fa-magnifying-glass fa-xl" ></i></button></a>
+                    <p class="mt-2">Ver detalle</p>
+                </div>
+                <div>
+                    <a [routerLink]="['/control','updateuser',myUser._id]"><button class="btn btn-outline-warning"><i class="fa-regular fa-pen-to-square fa-lg"></i></button></a>
+                    <p class="mt-2 ">Actualizar</p>
+                </div>
+                <div>
+                    <a (click)="deleteUser(myUser)"><button class="btn btn-outline-warning"><i class="fa-solid fa-trash fa-lg"></i></button></a>
+                    <p class="mt-2 ">Borrar</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

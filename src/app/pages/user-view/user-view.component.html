@@ -1,0 +1,21 @@
+@if(this.singleUser){
+<section class="row g-5 mt-3 p-3 mb-5 ">
+    <figure class="col-12 col-md-4">
+        <img class="img-fluid rounded-circle " [src]="singleUser.image">
+    </figure>
+    <div class="col-12 col-md-8 border-1 border-start border-warning">
+        <h2>{{singleUser.first_name}}</h2>
+        <h2>{{singleUser.last_name}}</h2>
+        <p><strong>Nombre Usuario:</strong> {{singleUser.username}}</p>
+        <p><strong>Email:</strong> {{singleUser.email}}</p>
+        <div class="d-flex flex-row ">
+            <button (click)="deleteUser(singleUser)" class="btn btn-outline-warning">Eliminar</button>
+            <button class="btn btn-outline-warning"
+                [routerLink]="['/control','updateuser',singleUser._id]">Actualizar</button>
+            <button class="btn btn-outline-warning" [routerLink]="['/control','home']">Volver al listado</button>
+        </div>
+    </div>
+
+</section>
+
+}

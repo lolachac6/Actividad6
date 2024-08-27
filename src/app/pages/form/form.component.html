@@ -1,0 +1,75 @@
+<section class="container mt-3">
+  <div class="card shadow p-5">
+    <h3>{{ tipo }} USUARIO</h3>
+    <hr />
+    <form [formGroup]="userForm" (ngSubmit)="getDataForm()">
+      <div class="my-3">
+        <label class="form-label" for="nombre">Nombre Usuario</label>
+        <input
+          type="text"
+          id="nombre"
+          formControlName="nombre"
+          class="form-control"
+          placeholder="Introduce el Nombre del usuario"
+        />
+        @if(checkControl('nombre','required')){
+        <p class="text-danger">* El nombre es obligatorio</p>
+        }
+      </div>
+      <div class="my-3">
+        <label class="form-label" for="apellidos">Apellidos Usuario</label>
+        <input
+          type="text"
+          id="apellidos"
+          formControlName="apellidos"
+          class="form-control"
+          placeholder="Introduce el/los apellido/s del usuario"
+        />
+        @if(checkControl('apellidos','required')){
+        <p class="text-danger">* El/Los apellido/s es/son obligatorio/s</p>
+        }
+      </div>
+      <div class="my-3">
+        <label class="form-label" for="email ">Email Usuario</label>
+        <input
+          type="text"
+          id="email"
+          formControlName="email"
+          class="form-control"
+          placeholder="Introduce el email del usuario"
+        />
+        @if(checkControl('email','required')){
+        <p class="text-danger">* El email es obligatorio</p>
+        }@else if(checkControl('email','pattern')){
+        <p class="text-danger">* El email no es valido</p>
+        }
+      </div>
+      <div class="my-3">
+        <label class="form-label" for="imagen">Imagen Usuario(url)</label>
+        <input
+          type="url"
+          id="imagen"
+          formControlName="imagen"
+          class="form-control"
+          placeholder="Introduce url de la imagen del usuario"
+        />
+        @if(checkControl('imagen','required')){
+        <p class="text-danger">* La imagen es obligatoria</p>
+        }@else if(checkControl('imagen','imagenValidator')){
+        <p class="text-danger">
+          {{ userForm.get('imagen')?.errors?.['imagenValidator'] }}
+        </p>
+        }
+      </div>
+
+      <div class="my-3">
+        <input
+          class="btn btn-warning"
+          type="submit"
+          [value]="tipobtn"
+          [disabled]="!userForm.valid"
+        />
+      </div>
+    </form>
+  </div>
+</section>

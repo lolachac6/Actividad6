@@ -1,0 +1,28 @@
+<div class="row">
+    @for(user of arrUsers;track user._id){
+
+    <article class="col-12 col-md-6 col-lg-4 g-3">
+       <app-all-users [myUser]="user"></app-all-users>
+    </article>
+
+    }
+</div>
+
+
+<nav class="d-flex justify-content-center mt-5">
+    <ul class="pagination">
+      <li class="page-item " [class.disabled]="activePage===1">
+        <a class="page-link"  (click)="restOfUsers(1)">Anterior</a>
+      </li>
+      <li class="page-item " [class.active]="activePage===1">
+        <a class="page-link"  (click)="restOfUsers(1)">1</a>
+      </li>
+      <li class="page-item" aria-current="page" [class.active]="activePage===2">
+        <a class="page-link" (click)="restOfUsers(2)">2</a>
+      </li>
+
+      <li class="page-item" [class.disabled]="activePage===2">
+        <a class="page-link"  (click)="restOfUsers(2)">Siguiente</a>
+      </li>
+    </ul>
+</nav>
