@@ -33,5 +33,9 @@ insert(user:IResult):Promise<IResult>{
 
 }
 
+update(user:IResult):Promise<IResult>{
+  return firstValueFrom(this.http.put<IResult>(`${this.url}/${user._id}`,user))
+
+}
 
 }
