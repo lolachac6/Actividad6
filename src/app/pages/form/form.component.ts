@@ -53,10 +53,14 @@ export class FormComponent {
         const user: IResult = await this.userServices.getById(params.id);
         this.userForm = new FormGroup({
           _id: new FormControl(user._id, []),
-          nombre: new FormControl(user.first_name, []),
-          apellidos: new FormControl(user.last_name, []),
-          email: new FormControl(user.email, []),
-          imagen: new FormControl(user.image, []),
+          nombre: new FormControl(user.first_name, [Validators.required]),
+          apellidos: new FormControl(user.last_name, [Validators.required]),
+          email: new FormControl(user.email, [Validators.required,
+            Validators.pattern(
+              /^((([!#$%&'*+\-/=?^_`{|}~\w])|([!#$%&'*+\-/=?^_`{|}~\w][!#$%&'*+\-/=?^_`{|}~\.\w]{0,}[!#$%&'*+\-/=?^_`{|}~\w]))[@]\w+([-.]\w+)*\.\w+([-.]\w+)*)$/
+            ),
+          ]),
+          imagen: new FormControl(user.image, [Validators.required]),
         });
       }
     });
@@ -80,7 +84,7 @@ export class FormComponent {
   }
   async getDataForm() {
     if (this.userForm.value._id) {
-      //ACTUALIZANDO
+
       try {
         const response: IResult = await this.userServices.update(this.userForm.value)
         if (response._id) {
@@ -95,7 +99,7 @@ export class FormComponent {
         }
      
       }else {
-      //INSERCCION
+      
       try {
         const response: IResult = await this.userServices.insert(
           this.userForm.value
